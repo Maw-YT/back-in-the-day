@@ -1,0 +1,50 @@
+/*
+ * Back in the day - PSX Style Shader
+ */
+
+#define INFO 0.0 //[0.0]
+#define VERTEX_SNAP 1.0 //[0.0 1.0]
+#define VERTEX_BREATHING 0.35 //[0.0 0.25 0.50 0.75 1.0]
+#define VERTEX_SNAP_RES 320.0 //[120.0 160.0 240.0 320.0 480.0]
+#define HAND_VERTEX_SNAP 0.30 //[0.0 0.30 0.75 1.0 1.5 2.0 3.0 4.0 5.0]
+#define HAND_BREATH_MUL 0.50 //[0.0 0.25 0.50 0.75 1.0 1.5 2.0]
+#define TEXTURE_WARP 1.0 //[0.0 1.0]
+#define TEXTURE_WARP_CAP 0.25 //[0.0 0.10 0.25 0.50 1.0 2.0]
+
+#define RENDER_WIDTH 320.0 //[160.0 240.0 320.0 480.0 640.0]
+#define RENDER_HEIGHT 240.0 //[120.0 180.0 240.0 360.0 480.0]
+#define ASPECT_MODE 1.0 //[0.0 1.0 2.0]
+#define HAND_ASPECT_OFFSET 1.0 //[0.0 0.25 0.50 0.75 1.0 1.25 1.50]
+
+#define DITHER_ENABLE 1.0 //[0.0 1.0]
+#define COLOR_16BIT 1.0 //[0.0 1.0]
+#define DITHER_STRENGTH 1.0 //[0.5 1.0 1.5 2.0 2.5 3.0]
+#define COLOR_STEPS 31.0 //[8.0 16.0 24.0 31.0 32.0]
+#define DITHER_SCALE 1.0 //[1.0 1.5 2.0 2.5 3.0 4.0]
+
+#define FOG_ENABLE 1.0 //[0.0 1.0]
+#define FOG_DISTANCE 20.0 //[12.0 20.0 28.0 40.0 64.0 96.0]
+#define FOG_DENSITY 0.14 //[0.04 0.06 0.08 0.10 0.12 0.16 0.20]
+#define SKY_FOG_STRENGTH 0.50 //[0.20 0.35 0.50 0.65 0.80 1.00]
+#define CAVE_FOG_ENABLE 1.0 //[0.0 1.0]
+#define CAVE_FOG_STRENGTH 0.65 //[0.0 0.35 0.65 1.0]
+#define CAVE_FOG_HEIGHT 56.0 //[32.0 48.0 56.0 64.0 80.0 128.0 192.0 256.0 320.0]
+#define CAVE_FOG_DEPTH 40.0 //[16.0 24.0 40.0 64.0 96.0]
+
+#define LIGHT_LEVEL_STEPS 4.0 //[2.0 3.0 4.0 6.0 8.0]
+#define LIGHT_SHADE_STEPS 4.0 //[2.0 3.0 4.0 6.0 8.0]
+#define LIGHT_AMBIENT 0.35 //[0.20 0.35 0.50]
+#define PSX_LIGHTING 1.0 //[0.0 1.0]
+#define HAND_LIGHT_ENABLE 1.0 //[0.0 1.0]
+#define HAND_LIGHT_STRENGTH 1.0 //[0.5 1.0 1.5 2.0]
+#define HAND_LIGHT_RANGE 1.0 //[0.5 0.75 1.0 1.25 1.5 2.0]
+
+#define CRT_ENABLE 1.0 //[0.0 1.0]
+#define CRT_SCANLINE 0.35 //[0.0 0.15 0.35 0.50 0.75 1.0]
+#define CRT_VIGNETTE 0.40 //[0.0 0.20 0.40 0.60 0.80 1.0]
+#define CRT_CHROMATIC 0.25 //[0.0 0.10 0.25 0.50 0.75 1.0]
+#define CRT_CURVATURE 0.30 //[0.0 0.15 0.30 0.50 0.75 1.0]
+#define CRT_GLOW 0.35 //[0.0 0.15 0.35 0.50 0.75 1.0]
+#define CRT_MASK 0.25 //[0.0 0.15 0.25 0.50 0.75 1.0]
+#define CRT_BLEED 0.20 //[0.0 0.10 0.20 0.40 0.60 1.0]
+#define CRT_NOISE 0.12 //[0.0 0.05 0.12 0.25 0.50 1.0]
