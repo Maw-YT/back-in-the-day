@@ -34,7 +34,12 @@ void main() {
     vec3 raw = psxCrtSampleScene(colortex0, contentUV);
     vec2 ditherCoord = floor(contentUV * vec2(RENDER_WIDTH, RENDER_HEIGHT));
     float lum = dot(raw, vec3(0.299, 0.587, 0.114));
-    vec3 color = lum > 0.4 ? psxQuantizeColor(raw, 0.5) : psxDitherColor(raw, ditherCoord);
+    // Fade the ordered dither out smoothly toward brighter tones instead of a
+    // hard cutoff. The old cliff made mid-tone lit surfaces straddle the
+    // threshold and speckle; this keeps dithering in the shadows where it reads
+    // as PSX banding and leaves lit areas clean.
+    float ditherFade = 1.0 - smoothstep(0.32, 0.6, lum);
+    vec3 color = mix(psxQuantizeColor(raw, 0.5), psxDitherColor(raw, ditherCoord), ditherFade);
     color = psxCrtGlow(colortex0, contentUV, color);
     color = psxCrtPost(colortex0, contentUV, color);
     gl_FragData[0] = vec4(color, 1.0);

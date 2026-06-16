@@ -9,7 +9,7 @@ varying vec2 texCoord;
 #include "/lib/psx/affineTex.glsl"
 
 void main() {
-    gl_Position = psxTransformVertex(gl_Vertex, vec2(0.0, 0.9333));
+    gl_Position = psxTransformVertex(gl_Vertex, vec2(0.0, 1.0));
 
     color = gl_Color;
     texCoord = psxPassTexCoord((gl_TextureMatrix[0] * gl_MultiTexCoord0).xy, gl_Position);

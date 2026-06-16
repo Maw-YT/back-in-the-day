@@ -12,8 +12,7 @@ varying vec3 normal;
 #include "/lib/psx/lighting.glsl"
 
 void main() {
-    lmCoord = (gl_TextureMatrix[1] * gl_MultiTexCoord1).xy;
-    lmCoord = clamp((lmCoord - 0.03125) * 1.06667, vec2(0.0), vec2(0.9333, 1.0));
+    lmCoord = psxReadLightmapCoord();
     gl_Position = psxTransformVertex(gl_Vertex, lmCoord);
 
     color = gl_Color;

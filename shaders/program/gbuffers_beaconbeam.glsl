@@ -7,7 +7,7 @@ varying vec4 color;
 #include "/lib/psx/vertexSnap.glsl"
 
 void main() {
-    gl_Position = psxTransformVertex(gl_Vertex, vec2(0.0, 0.9333));
+    gl_Position = psxTransformVertex(gl_Vertex, vec2(0.0, 1.0));
 
     color = gl_Color;
 }
