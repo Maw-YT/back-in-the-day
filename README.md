@@ -75,13 +75,15 @@ Fragment-shader lighting with banded lightmaps and directional face shading (sim
 | Setting | Default | Range | Description |
 |---------|---------|-------|-------------|
 | PSX Lighting | On | Vanilla / On | **Vanilla** uses raw lightmap samples; **On** enables banded PSX lighting |
-| Light Bands | 4 | 2–8 | Quantization steps for block/sky light |
+| Light Bands | 16 | 4–16 | Quantization steps for block/sky light. **16** ≈ native granularity (clean, flat ground stays smooth); lower = chunkier retro banding (and some checkerboard shimmer on light gradients) |
 | Shade Bands | 4 | 2–8 | Quantization steps for sun-facing face shading |
 | Shadow Depth | 0.35 | 0.20–0.50 | Ambient floor for shaded faces |
 
 **Underground behavior:** When sky light is very low, face shading is disabled and lighting uses a stable ambient lightmap sample — this prevents flicker in caves from vertex breathing and band snapping.
 
 **Lightmap snapping:** Lightmap coordinates are snapped to a 16×16 texel grid for stable, chunky light transitions.
+
+**Cross-version lighting:** Block/sky light is normalized to a clean `[0, 1]` range on read and a fresh texel-center coordinate is rebuilt before sampling the lightmap. This keeps lighting correct on every 1.21.x build despite the differing raw lightmap ranges Iris delivers across versions (see Iris issues #2487 / #2810).
 
 ### Hand Held Light
 Dynamic light from items held in main hand or offhand (torches, lanterns, etc.). Uses Iris uniforms `heldBlockLightValue`, `heldBlockLightValue2`, and `relativeEyePosition`.
@@ -181,6 +183,12 @@ Enabled in `shaders.properties` (`separateAo = true`) for cleaner ambient occlus
 | Entities | ✓ | ✓ | ✓ | ✓ | ✓ | + entity color tint |
 | Glowing entities | ✓ | ✓ | ✓ | ✓ | ✓ | |
 | Hand / held items | ✓* | ✓ | ✓* | ✓ | ✓ | *Separate hand snap/breath/light paths |
+| Hand (translucent) | ✓* | ✓ | ✓* | ✓ | ✓ | `gbuffers_hand_water` — maps, glass, etc. |
+| Particles | ✓ | ✓ | ✓ | ✓ | ✓ | `gbuffers_particles` / `_translucent` |
+| Translucent entities | ✓ | ✓ | ✓ | ✓ | ✓ | `gbuffers_entities_translucent` |
+| Translucent block entities | ✓ | ✓ | ✓ | ✓ | ✓ | `gbuffers_block_translucent` |
+| Lightning | ✓ | — | ✓ | ✓ | ✓ | `gbuffers_lightning` |
+| Lines / outlines | ✓ | — | ✓ | ✓ | ✓ | `gbuffers_line` / `gbuffers_lines` |
 | Water | ✓ | ✓ | ✓ | ✓ | ✓ | Vanilla-style water shading |
 | Clouds | ✓** | ✓ | — | ✓ | ✓ | **View-space snap |
 | Weather | ✓ | ✓ | — | ✓ | ✓ | Rain/snow |
@@ -245,6 +253,21 @@ Leave all defaults — 320×240, 4:3, vertex snap on, CRT on, cave fog on.
 
 ## Credits & Compatibility
 
-Designed for **Iris Shaders**. Hand held light requires Iris (or a mod that provides `heldBlockLightValue` uniforms).
+**Supported Minecraft versions:** 1.21 through 1.21.11 (all 1.21.x releases)
+
+PSX lighting is version-independent: it does not assume a fixed raw lightmap range, so block/sky banding and directional shading render identically across the whole 1.21.x line regardless of the Iris build's lightmap offset.
+
+**Required:** [Iris Shaders](https://irisshaders.dev/) + Sodium (included with Iris installer)
+
+| Iris version | Minecraft |
+|--------------|-----------|
+| 1.7.x+ | 1.21 – 1.21.4 |
+| 1.8.x+ | 1.21.5 – 1.21.8 |
+| 1.9.x+ | 1.21.9 – 1.21.10 |
+| 1.10.x+ | 1.21.11 |
+
+Hand held light requires Iris (or a mod that provides `heldBlockLightValue` uniforms).
+
+The pack includes dedicated shader programs for render passes added across the 1.21.x line (`gbuffers_hand_water`, `gbuffers_textured_lit`, `gbuffers_line`, `gbuffers_lightning`, translucent entity/block/particle passes, and more). Older 1.21.x builds fall back gracefully when a pass is not used by that version.
 
 Sky rendering intentionally uses a vanilla passthrough to avoid regressions with sun/moon alpha and fog interaction.
