@@ -22,7 +22,7 @@ varying vec3 psxWorldPos;
 #endif
 
 float psxSkyLightFactor(vec2 lmCoord) {
-    return smoothstep(0.0, 0.14, clamp(lmCoord.y / 0.9333, 0.0, 1.0));
+    return smoothstep(0.0, 0.14, clamp(lmCoord.y, 0.0, 1.0));
 }
 
 vec3 psxVertexBreathingOffset(vec3 pos, float step, float strength) {

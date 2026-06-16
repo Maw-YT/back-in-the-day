@@ -14,12 +14,12 @@ float psxHandLightAt(vec3 worldPos, float heldLight, vec3 handOffset) {
 
     vec3 heldLightPos = worldPos + relativeEyePosition + handOffset;
     float dist = length(heldLightPos) * HAND_LIGHT_RANGE;
-    return clamp((heldLight * HAND_LIGHT_STRENGTH - 2.0 * dist) / 15.0, 0.0, 0.9333);
+    return clamp((heldLight * HAND_LIGHT_STRENGTH - 2.0 * dist) / 15.0, 0.0, 1.0);
 }
 
 float psxMergeBlockLight(float baseLight, float addedLight) {
     if (addedLight <= baseLight) return baseLight;
-    return log2(exp2(clamp(baseLight, 0.0, 0.9333) * 32.0) + exp2(addedLight * 32.0)) / 32.0;
+    return log2(exp2(clamp(baseLight, 0.0, 1.0) * 32.0) + exp2(addedLight * 32.0)) / 32.0;
 }
 
 vec2 psxApplyHandLight(vec2 lmCoord, vec3 worldPos) {
@@ -33,7 +33,7 @@ vec2 psxApplyHandLight(vec2 lmCoord, vec3 worldPos) {
 
     vec2 result = lmCoord;
     result.x = psxMergeBlockLight(result.x, handLight);
-    return clamp(result, vec2(0.0), vec2(0.9333));
+    return clamp(result, vec2(0.0), vec2(1.0));
 }
 
 vec2 psxApplyHandLightHeld(vec2 lmCoord) {
@@ -43,8 +43,8 @@ vec2 psxApplyHandLightHeld(vec2 lmCoord) {
     if (heldLight < 0.5) return lmCoord;
 
     vec2 result = lmCoord;
-    result.x = psxMergeBlockLight(result.x, min(heldLight / 15.0, 0.9333));
-    return clamp(result, vec2(0.0), vec2(0.9333));
+    result.x = psxMergeBlockLight(result.x, min(heldLight / 15.0, 1.0));
+    return clamp(result, vec2(0.0), vec2(1.0));
 }
 
 #endif
