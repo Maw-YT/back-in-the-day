@@ -16,6 +16,15 @@ varying float psxFogWorldY;
 #define SKY_FOG_STRENGTH 0.50
 #endif
 
+#ifndef FOG_BANDS
+#define FOG_BANDS 8.0
+#endif
+
+float psxQuantizeFogFactor(float fogAmount) {
+    float steps = max(FOG_BANDS, 1.0);
+    return clamp(floor(fogAmount * steps + 0.5) / steps, 0.0, 1.0);
+}
+
 float psxCaveFogBlend(float worldY) {
     if (CAVE_FOG_ENABLE < 0.5) return 0.0;
 
@@ -28,7 +37,7 @@ float psxFogFactor(float viewDistance, float worldY) {
     float dist = max(viewDistance, 0.0);
 
     if (isEyeInWater > 0) {
-        return clamp(1.0 - exp(-dist * FOG_DENSITY * 2.5), 0.0, 1.0);
+        return psxQuantizeFogFactor(clamp(1.0 - exp(-dist * FOG_DENSITY * 2.5), 0.0, 1.0));
     }
 
     float expFog = 1.0 - exp(-dist * FOG_DENSITY);
@@ -37,7 +46,7 @@ float psxFogFactor(float viewDistance, float worldY) {
 
     float cave = psxCaveFogBlend(worldY);
     fogAmount = min(fogAmount * (1.0 + cave * 0.45) + cave * 0.18, 1.0);
-    return fogAmount;
+    return psxQuantizeFogFactor(fogAmount);
 #else
     return 0.0;
 #endif
